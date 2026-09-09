@@ -70,7 +70,7 @@ export function validateCollector(data) {
   value.respondents.forEach((row, index) => {
     const prefix = `respondents.${index}`;
     if (!row.name) add("respondent-name", `${prefix}.name`, "Completează numele respondentului.", "Enter the respondent's name.");
-    if (!isValidEmail(row.email)) add("respondent-email", `${prefix}.email`, "Completează un email valid.", "Enter a valid email.");
+    if (!isValidEmail(row.email)) add("respondent-email", `${prefix}.email`, "Completează o adresă de email validă.", "Enter a valid email address.");
     if (!VALID_ROLES.has(row.role)) add("respondent-role", `${prefix}.role`, "Alege relația profesională.", "Choose the professional relationship.");
     if (!LANGUAGE_RE.test(row.language)) add("respondent-language", `${prefix}.language`, "Limba trebuie să aibă exact două litere.", "Language must use exactly two letters.");
     if (row.role === "Manager" && row.email !== value.participantEmail) managerCount += 1;
