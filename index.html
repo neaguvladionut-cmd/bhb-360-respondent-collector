@@ -27,9 +27,9 @@
         <h1 id="hero-title" data-i18n="title">Alege oamenii care îți pot oferi o perspectivă sinceră.</h1>
         <p class="hero-lead" data-i18n="lead">Completează lista o singură dată. Noi verificăm datele înainte să creezi fișierul pentru consultant.</p>
         <div class="hero-points" aria-label="Avantaje">
-          <span><b>1</b><span data-i18n="hero1">Tu și managerul tău sunteți suficienți pentru a începe</span></span>
+          <span><b>1</b><span data-i18n="hero1">Tu + managerul tău sunt suficiente pentru a începe</span></span>
           <span><b>10</b><span data-i18n="hero2">respondenți recomandați, nu obligatorii</span></span>
-          <span><b>15</b><span data-i18n="hero3">număr maxim de respondenți</span></span>
+          <span><b>15+</b><span data-i18n="hero3">verifică grupurile mari</span></span>
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
@@ -66,25 +66,60 @@
           <p data-i18n="formLead">Autoevaluarea va fi inclusă automat. Alege separat limba în care vrei să primești chestionarul.</p>
         </div>
 
+        <div class="respondent-heading identity-heading">
+          <div>
+            <h3 data-i18n="aboutYou">Despre tine</h3>
+            <p data-i18n="aboutLead">Datele tale stau la baza autoevaluării și a raportului individual.</p>
+          </div>
+        </div>
         <fieldset class="panel identity-panel">
-          <legend data-i18n="aboutYou">Despre tine</legend>
+          <legend class="sr-only" data-i18n="aboutYou">Despre tine</legend>
           <div class="field-grid three">
             <label><span data-i18n="fullName">Nume complet</span><input id="participant-name" name="participantName" autocomplete="name" required></label>
             <label><span>Email</span><input id="participant-email" name="participantEmail" type="email" autocomplete="email" required></label>
             <label><span data-i18n="selfLanguage">Limba autoevaluării</span><input id="self-language" name="selfLanguage" value="RO" maxlength="2" inputmode="text" required aria-describedby="language-help"></label>
           </div>
           <p id="language-help" class="field-help" data-i18n="languageHelp">Folosește codul din două litere: RO, EN etc.</p>
+          <button id="optional-criteria" class="button button-ghost optional-toggle" type="button" aria-expanded="false" aria-controls="criteria-panel" data-i18n="optionalCriteria">Adaugă criterii opționale</button>
+          <div id="criteria-panel" class="criteria-panel" hidden>
+            <p class="field-help" data-i18n="criteriaHelp">Completează până la cinci criterii pentru acest participant.</p>
+            <div class="field-grid five">
+              <label><span data-i18n="criterion1">Criteriu 1</span><input class="criterion-input" maxlength="120"></label>
+              <label><span data-i18n="criterion2">Criteriu 2</span><input class="criterion-input" maxlength="120"></label>
+              <label><span data-i18n="criterion3">Criteriu 3</span><input class="criterion-input" maxlength="120"></label>
+              <label><span data-i18n="criterion4">Criteriu 4</span><input class="criterion-input" maxlength="120"></label>
+              <label><span data-i18n="criterion5">Criteriu 5</span><input class="criterion-input" maxlength="120"></label>
+            </div>
+          </div>
         </fieldset>
 
         <div class="respondent-heading">
           <div>
-            <h3 data-i18n="respondentsTitle">Respondenți</h3>
-            <p data-i18n="respondentsLead">Adaugă managerul și pe oricine altcineva care poate oferi feedback util.</p>
+            <h3 data-i18n="managerTitle">Manager</h3>
+            <p data-i18n="managerLead">Acest rând este obligatoriu și rămâne separat de ceilalți respondenți.</p>
           </div>
-          <div class="counter" aria-live="polite"><strong id="respondent-count">1</strong><span>/ 15</span></div>
+          <div class="counter" aria-live="polite"><strong>1</strong><span data-i18n="respondent">respondent</span></div>
         </div>
-        <div id="respondent-list" class="respondent-list"></div>
-        <button id="add-respondent" class="button button-secondary" type="button"><span aria-hidden="true">＋</span><span data-i18n="add">Adaugă respondent</span></button>
+        <fieldset class="respondent-card manager-card">
+          <legend class="sr-only" data-i18n="managerTitle">Manager</legend>
+          <div class="respondent-card-head"><div class="respondent-role-badge"><span aria-hidden="true">↑</span><span data-i18n="managerTitle">Manager</span></div></div>
+          <div class="field-grid four">
+            <label><span data-i18n="respondentName">Nume complet</span><input id="manager-name" autocomplete="off" required></label>
+            <label><span>Email</span><input id="manager-email" type="email" autocomplete="off" required></label>
+            <label><span data-i18n="questionnaireLanguage">Limba chestionarului</span><input id="manager-language" value="RO" maxlength="2" inputmode="text" required></label>
+          </div>
+        </fieldset>
+        <section class="respondents-group" aria-labelledby="respondents-title">
+          <div class="respondent-heading other-respondents-heading">
+            <div>
+              <h3 id="respondents-title" data-i18n="respondentsTitle">Alți respondenți</h3>
+              <p data-i18n="respondentsLead">Adaugă colegi, subordonați sau stakeholderi.</p>
+            </div>
+            <div class="counter" aria-live="polite"><strong id="respondent-count">1</strong><span id="respondent-recommendation">/ 10 recomandați</span></div>
+          </div>
+          <div id="respondent-list" class="respondent-list"></div>
+          <button id="add-respondent" class="button button-secondary" type="button"><span aria-hidden="true">＋</span><span data-i18n="add">Adaugă respondent</span></button>
+        </section>
 
         <aside class="readiness" aria-labelledby="ready-title">
           <div class="ready-mark" id="ready-mark" aria-hidden="true">1</div>
@@ -92,12 +127,13 @@
             <h3 id="ready-title" data-i18n="readyTitle">Verificare înainte de descărcare</h3>
             <p id="ready-summary" data-i18n="readyEmpty">Completează datele și vom arăta exact ce trebuie corectat.</p>
             <ul id="error-list" class="error-list" aria-live="polite"></ul>
+            <ul id="warning-list" class="warning-list" aria-live="polite"></ul>
           </div>
         </aside>
 
         <div class="form-actions">
           <button id="clear-form" class="button button-ghost" type="button" data-i18n="clear">Șterge tot</button>
-          <button id="download-file" class="button button-primary" type="submit"><span data-i18n="download">Descarcă fișierul pentru consultant</span><span aria-hidden="true">→</span></button>
+          <div class="form-action-group"><button id="download-template" class="button button-secondary" type="button" data-i18n="template">Descarcă șablon pentru listă mare</button><button id="download-file" class="button button-primary" type="submit"><span data-i18n="download">Descarcă fișierul pentru consultant</span><span aria-hidden="true">→</span></button></div>
         </div>
 	        <p class="handoff" data-i18n="handoff">După descărcare, atașează fișierul într-un email către consultantul tău.</p>
 	        <aside class="recovery-guide"><strong data-i18n="recoveryTitle">Dacă ceva nu merge</strong><p data-i18n="recoveryText">Corectează câmpurile marcate și încearcă din nou. Dacă închizi sau reîncarci pagina, datele din formular se pierd și trebuie completate din nou.</p><p data-i18n="recoveryDownloaded">Fișierul descărcat rămâne pe dispozitivul tău chiar dacă ștergi sau închizi formularul. Trimite consultantului doar ultima versiune corectă.</p></aside>
@@ -117,7 +153,7 @@
       <div class="field-grid four">
         <label><span data-i18n="respondentName">Nume complet</span><input class="row-name" autocomplete="off" required></label>
         <label><span>Email</span><input class="row-email" type="email" autocomplete="off" required></label>
-        <label><span data-i18n="relationship">Relația cu tine</span><select class="row-role" required><option value="Manager">Manager</option><option value="Peer">Peer</option><option value="Subordonat" data-i18n="subRole">Subordonat</option><option value="Stakeholder">Stakeholder</option></select></label>
+        <label><span data-i18n="relationship">Relația cu tine</span><select class="row-role" required><option value="Peer">Peer</option><option value="Subordonat" data-i18n="subRole">Subordonat</option><option value="Stakeholder">Stakeholder</option></select></label>
         <label><span data-i18n="questionnaireLanguage">Limba chestionarului</span><input class="row-language" value="RO" maxlength="2" inputmode="text" required></label>
       </div>
     </fieldset>
