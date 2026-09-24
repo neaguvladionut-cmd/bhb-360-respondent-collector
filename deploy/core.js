@@ -110,7 +110,7 @@ export function validateCollector(data) {
     const prefix = index === 0 ? "manager" : `respondents.${index - 1}`;
     if (index > 0 && !VALID_ROLES.has(row.role)) add("respondent-role", `${prefix}.role`, "Alege relația profesională.", "Choose the professional relationship.");
     if (!row.name && index > 0) add("respondent-name", `${prefix}.name`, "Completează numele respondentului.", "Enter the respondent's name.");
-    if (!isValidEmail(row.email) && index > 0) add("respondent-email", `${prefix}.email`, "Completează un email valid.", "Enter a valid email.");
+    if (!isValidEmail(row.email) && index > 0) add("respondent-email", `${prefix}.email`, "Completează o adresă de email validă.", "Enter a valid email address.");
     if (!LANGUAGE_RE.test(row.language) && index > 0) add("respondent-language", `${prefix}.language`, "Limba trebuie să aibă exact două litere.", "Language must use exactly two letters.");
     if (index > 0 && row.email && row.email === value.participantEmail) add("respondent-is-self", `${prefix}.email`, "Autoevaluarea este inclusă deja. Folosește o altă adresă.", "Self-evaluation is already included. Use a different address.");
     if (row.email && seen.has(row.email)) add("duplicate-email", `${prefix}.email`, "Acest respondent a fost adăugat deja.", "This respondent was already added.");
