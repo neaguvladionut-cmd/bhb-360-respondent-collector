@@ -71,7 +71,7 @@ For a local preview, extract the pack and open `deploy/index.html` directly. The
 
 ## Acceptance boundary
 
-The authoritative acceptance list is the Architect decision gate in [docs/review-note.md](docs/review-note.md). The collector is accepted only as one half of the pair: its downloaded workbook must round-trip through the internal builder, pass privacy/accessibility/visual checks, and use synthetic fixtures only. It is not itself a production-app importer.
+The authoritative acceptance list is the Architect decision gate in the review note (internal note, kept in the private workspace). The collector is accepted only as one half of the pair: its downloaded workbook must round-trip through the internal builder, pass privacy/accessibility/visual checks, and use synthetic fixtures only. It is not itself a production-app importer.
 
 ## Development verification
 
