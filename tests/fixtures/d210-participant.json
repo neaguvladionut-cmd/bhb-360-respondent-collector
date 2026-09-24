@@ -1,0 +1,10 @@
+{
+  "fixture": "D210 SYNTHETIC — not a real person",
+  "participantName": "D210 Ada Exemplu",
+  "participantEmail": "ada@example.invalid",
+  "selfLanguage": "RO",
+  "respondents": [
+    { "name": "D210 Mihai Manager", "email": "mihai@example.invalid", "role": "Manager", "language": "RO" },
+    { "name": "D210 Erin Stakeholder", "email": "erin@example.invalid", "role": "Stakeholder", "language": "EN" }
+  ]
+}
