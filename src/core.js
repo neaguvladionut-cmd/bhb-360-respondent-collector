@@ -211,24 +211,66 @@ export function createCollectorWorkbook(XLSX, data, uiLanguage = "RO") {
 }
 
 export function createMassTemplateWorkbook(XLSX, uiLanguage = "RO") {
-  const rows = [
-    ["BHB360_MASS_RELATIONS_V1", uiLanguage],
-    ["Instrucțiuni / Instructions", "Completează câte un rând pentru fiecare relație participant–respondent. Nu adăuga rândul de autoevaluare; instrumentul îl creează automat. / Add one row for each participant–respondent relationship. Do not add the self-evaluation row; the tool creates it automatically."],
-    ["Roluri / Roles", "Folosește Manager, Peer, Subordonat sau Stakeholder. Managerul este obligatoriu pentru fiecare participant. / Use Manager, Peer, Subordonat or Stakeholder. Each participant must have a Manager."],
-    MASS_TEMPLATE_HEADERS,
-  ];
+  const isEnglish = String(uiLanguage).toUpperCase() === "EN";
+  const copy = isEnglish
+    ? {
+        instructions: "Instructions",
+        instructionText: "One row = one person who evaluates one participant. Repeat the participant's name and email on every row. Language: RO or EN. Criteriu1–5: optional; if used, the same values on all rows of a participant. Do not change row 4 (the header row).",
+        roles: "Roles",
+        rolesText: "Manager = direct manager (required, at least one per participant); Peer = colleague at a similar level; Subordonat = reports to the participant; Stakeholder = partner from another department or outside the company. Recommended: about 10 evaluators per participant.",
+        exampleTitle: "Filled-in example — for guidance only. Fill in your list on the Relatii sheet.",
+        exampleLabel: "Example",
+        sheetName: "Example",
+      }
+    : {
+        instructions: "Instrucțiuni",
+        instructionText: "Un rând = o persoană care evaluează un participant. Repetați numele și emailul participantului pe fiecare rând. Language: RO sau EN. Criteriu1–5: opțional; dacă le folosiți, aceleași valori pe toate rândurile unui participant. Nu modificați rândul 4 (capul de tabel).",
+        roles: "Roluri",
+        rolesText: "Manager = șeful direct (obligatoriu, cel puțin unul per participant); Peer = coleg de nivel similar; Subordonat = îi raportează participantului; Stakeholder = partener din alt departament sau din afara firmei. Recomandat: circa 10 evaluatori per participant.",
+        exampleTitle: "Exemplu completat — doar pentru orientare. Completați lista în foaia Relatii.",
+        exampleLabel: "Exemplu",
+        sheetName: "Exemplu",
+      };
   const sheet = {};
-  rows.forEach((row, rowIndex) => row.forEach((value, columnIndex) => {
+  [
+    ["BHB360_MASS_RELATIONS_V1", uiLanguage],
+    [copy.instructions, copy.instructionText],
+    [copy.roles, copy.rolesText],
+    MASS_TEMPLATE_HEADERS,
+  ].forEach((row, rowIndex) => row.forEach((value, columnIndex) => {
     sheet[XLSX.utils.encode_cell({ r: rowIndex, c: columnIndex })] = literalCell(value);
   }));
   const headerRow = 3;
-  sheet["!ref"] = `A1:${XLSX.utils.encode_col(MASS_TEMPLATE_HEADERS.length - 1)}${rows.length}`;
+  sheet["!ref"] = `A1:${XLSX.utils.encode_col(MASS_TEMPLATE_HEADERS.length - 1)}4`;
   sheet["!autofilter"] = { ref: `A${headerRow + 1}:${XLSX.utils.encode_col(MASS_TEMPLATE_HEADERS.length - 1)}${headerRow + 1}` };
   sheet["!freeze"] = { xSplit: 0, ySplit: headerRow + 1, topLeftCell: `A${headerRow + 2}`, activePane: "bottomLeft", state: "frozen" };
-  sheet["!cols"] = [{ wch: 26 }, { wch: 32 }, { wch: 26 }, { wch: 32 }, { wch: 18 }, { wch: 12 }, ...Array.from({ length: CRITERIA_COUNT }, () => ({ wch: 16 }))];
+  const columnWidths = [{ wch: 26 }, { wch: 32 }, { wch: 26 }, { wch: 32 }, { wch: 18 }, { wch: 12 }, ...Array.from({ length: CRITERIA_COUNT }, () => ({ wch: 16 }))];
+  sheet["!cols"] = columnWidths;
+  const exampleRows = [
+    ["Ana Popescu", "ana.popescu@example.com", "Mihai Ionescu", "mihai.ionescu@example.com", "Manager", "RO", "", "", "", "", ""],
+    ["Ana Popescu", "ana.popescu@example.com", "Ioana Dobre", "ioana.dobre@example.com", "Peer", "RO", "", "", "", "", ""],
+    ["Ana Popescu", "ana.popescu@example.com", "Radu Stan", "radu.stan@example.com", "Subordonat", "RO", "", "", "", "", ""],
+    ["Ana Popescu", "ana.popescu@example.com", "John Smith", "john.smith@example.com", "Stakeholder", "EN", "", "", "", "", ""],
+    ["Mihai Ionescu", "mihai.ionescu@example.com", "Elena Marin", "elena.marin@example.com", "Manager", "RO", "", "", "", "", ""],
+    ["Mihai Ionescu", "mihai.ionescu@example.com", "Ana Popescu", "ana.popescu@example.com", "Subordonat", "RO", "", "", "", "", ""],
+  ];
+  const example = {};
+  example["A1"] = literalCell(copy.exampleTitle);
+  example["!ref"] = "A1:L9";
+  [copy.exampleLabel, ...MASS_TEMPLATE_HEADERS].forEach((value, columnIndex) => {
+    example[XLSX.utils.encode_cell({ r: 2, c: columnIndex })] = literalCell(value);
+  });
+  exampleRows.forEach((row, rowIndex) => {
+    example[XLSX.utils.encode_cell({ r: rowIndex + 3, c: 0 })] = literalCell("");
+    row.forEach((value, columnIndex) => {
+      example[XLSX.utils.encode_cell({ r: rowIndex + 3, c: columnIndex + 1 })] = literalCell(value);
+    });
+  });
+  example["!cols"] = [{ wch: 26 }, ...columnWidths];
   const workbook = XLSX.utils.book_new();
   workbook.Props = { Title: "BHB 360 mass respondent relations template", Author: "Business Health Bar", Comments: "Blank local template; no client data included." };
   XLSX.utils.book_append_sheet(workbook, sheet, "Relatii");
+  XLSX.utils.book_append_sheet(workbook, example, copy.sheetName);
   return workbook;
 }
 
